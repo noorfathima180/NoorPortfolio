@@ -1,0 +1,316 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── FONT IMPORTS ─────────────────────────────────────── */
+@import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@700,600,500&f[]=general-sans@400,500,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+/* ─── CSS VARIABLES ────────────────────────────────────── */
+:root {
+  --bg: #E3E2DE;
+  --fg: #1B0E0D;
+  --accent: #C72A09;
+  --neon: #31EF07;
+  --ghost: #D9D9D9;
+  --muted: #61220F;
+  --font-display: 'Clash Grotesk', 'Arial Black', sans-serif;
+  --font-body: 'General Sans', 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ─── BASE ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE OVERLAY ────────────────────────────────────── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ─── TYPOGRAPHY ───────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ─── NAVBAR BLEND ─────────────────────────────────────── */
+.navbar-blend {
+  mix-blend-mode: difference;
+  color: #E3E2DE;
+}
+
+/* ─── NEON UNDERLINE ANIMATION ─────────────────────────── */
+.nav-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--neon);
+  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ─── CHAR REVEAL ──────────────────────────────────────── */
+.char-reveal {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.9s ease;
+  will-change: transform, opacity;
+}
+
+.reveal-active .char-reveal {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ─── SCAN LINE ────────────────────────────────────────── */
+@keyframes scan-line {
+  0% { top: -5%; opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { top: 105%; opacity: 0; }
+}
+
+.scan-line {
+  animation: scan-line 8s linear infinite;
+}
+
+/* ─── LIGHT SCAN TEXT ──────────────────────────────────── */
+@keyframes light-scan {
+  0% { background-position: -200% 0; }
+  100% { background-position: 300% 0; }
+}
+
+.text-light-scan {
+  background-image: linear-gradient(
+    105deg,
+    rgba(227, 226, 222, 0.12) 40%,
+    #E3E2DE 50%,
+    rgba(227, 226, 222, 0.12) 60%
+  );
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: light-scan 6s linear infinite;
+  will-change: background-position;
+}
+
+/* ─── NEON BADGE ───────────────────────────────────────── */
+.neon-badge {
+  background: var(--neon);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.group:hover .neon-badge {
+  opacity: 1;
+}
+
+/* ─── PROJECT CARD BORDER ANIMATION ───────────────────── */
+.card-border-bottom {
+  position: relative;
+}
+
+.card-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.group:hover .card-border-bottom::after {
+  width: 100%;
+}
+
+/* ─── MANIFESTO HIGHLIGHT ──────────────────────────────── */
+.manifesto-highlight {
+  color: var(--muted);
+}
+
+/* ─── SCROLL REVEAL ────────────────────────────────────── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── STAGGER CHILDREN ─────────────────────────────────── */
+.stagger-children > *:nth-child(1) { transition-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { transition-delay: 0.15s; }
+.stagger-children > *:nth-child(3) { transition-delay: 0.25s; }
+.stagger-children > *:nth-child(4) { transition-delay: 0.35s; }
+.stagger-children > *:nth-child(5) { transition-delay: 0.45s; }
+
+/* ─── NEWSLETTER INPUT ─────────────────────────────────── */
+.newsletter-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(227, 226, 222, 0.3);
+  color: #E3E2DE;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  padding: 8px 0;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.newsletter-input::placeholder {
+  color: rgba(227, 226, 222, 0.35);
+}
+
+.newsletter-input:focus {
+  border-bottom-color: var(--neon);
+}
+
+/* ─── GHOST TEXT ───────────────────────────────────────── */
+.ghost-text {
+  color: var(--ghost);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4rem, 8vw, 10rem);
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  opacity: 0.35;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ─── CUSTOM SCROLLBAR ─────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--fg); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ─── MOBILE HAMBURGER MENU ────────────────────────────── */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #1B0E0D;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+/* ─── IMAGE GRAYSCALE ──────────────────────────────────── */
+.img-grayscale {
+  filter: grayscale(100%) contrast(1.1);
+  transition: filter 0.5s ease;
+}
+
+.group:hover .img-grayscale {
+  filter: grayscale(60%) contrast(1.05);
+}
+
+/* ─── DIVIDER LINE ANIMATION ───────────────────────────── */
+@keyframes line-expand {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.line-expand {
+  transform-origin: left;
+  animation: line-expand 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── AMBIENT ORBS ─────────────────────────────────────── */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -15px) scale(1.05); }
+  66% { transform: translate(-10px, 10px) scale(0.97); }
+}
+
+.orb-drift {
+  animation: orb-drift 18s ease-in-out infinite;
+}
+
+/* ─── HERO FADE IN ─────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fade-up-delay-1 { animation-delay: 0.3s; opacity: 0; }
+.fade-up-delay-2 { animation-delay: 0.55s; opacity: 0; }
+.fade-up-delay-3 { animation-delay: 0.8s; opacity: 0; }
+.fade-up-delay-4 { animation-delay: 1.05s; opacity: 0; }
